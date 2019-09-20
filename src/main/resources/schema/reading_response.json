@@ -1,0 +1,45 @@
+{
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/root.json",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "startDateTime",
+    "finishDateTime",
+    "type"
+  ],
+  "properties": {
+    "deviceId": {
+      "$id": "#/properties/deviceId",
+      "type": "string"
+    },
+    "groupId": {
+      "$id": "#/properties/groupId",
+      "type": "string"
+    },
+    "startDateTime" : {
+      "$id": "#/properties/startDateTime",
+      "type": "string",
+      "format": "date-time",
+      "required": true
+    },
+    "finishDateTime" : {
+      "$id": "#/properties/finishDateTime",
+      "type": "string",
+      "format": "date-time",
+      "required": true
+    },
+    "type": {
+      "$id": "#/properties/type",
+      "type": "string",
+      "required": true,
+      "enum": ["min", "max", "average"]
+    },
+    "value":{
+      "$id": "#/properties/value",
+      "type": "number",
+      "required": true
+    }
+  }
+}
