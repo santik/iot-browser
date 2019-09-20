@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface OutsideTemperatureRepository extends JpaRepository<OutsideTemperatureModel, String> {
-    List<OutsideTemperatureModel> findByDeviceIdAndCreatedBetween(String deviceId, ZonedDateTime startDate, ZonedDateTime endDate);
-    List<OutsideTemperatureModel> findByGroupIdAndCreatedBetween(String groupId, ZonedDateTime startDate, ZonedDateTime endDate);
+    List<OutsideTemperatureModel> findByDeviceIdAndCreatedBetween(String deviceId, Date startDate, Date endDate);
+    List<OutsideTemperatureModel> findByGroupIdAndCreatedBetween(String groupId, Date startDate, Date endDate);
 }

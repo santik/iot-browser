@@ -29,7 +29,6 @@
       "$id": "#/properties/created",
       "type": "string",
       "title": "The Created Schema",
-      "default": "",
       "format": "date-time",
       "required": true
     }

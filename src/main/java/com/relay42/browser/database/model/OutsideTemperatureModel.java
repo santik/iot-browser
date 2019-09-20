@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 public class OutsideTemperatureModel implements Serializable {
@@ -18,13 +18,13 @@ public class OutsideTemperatureModel implements Serializable {
 
     private String deviceId;
     private String groupId;
-    private ZonedDateTime created;
+    private Date created;
     private Double value;
 
     public OutsideTemperatureModel() {
     }
 
-    private OutsideTemperatureModel(String deviceId, String groupId, ZonedDateTime created, Double value) {
+    private OutsideTemperatureModel(String deviceId, String groupId, Date created, Double value) {
         this.deviceId = deviceId;
         this.groupId = groupId;
         this.created = created;
@@ -48,7 +48,7 @@ public class OutsideTemperatureModel implements Serializable {
         return groupId;
     }
 
-    public ZonedDateTime getCreated() {
+    public Date getCreated() {
         return created;
     }
 

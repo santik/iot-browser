@@ -11,7 +11,7 @@ public class ReadingRequestValidator {
             return false;
         }
 
-        if (readingRequest.getStartDateTime().isAfter(readingRequest.getFinishDateTime())) {
+        if (readingRequest.getStartDateTime().after(readingRequest.getFinishDateTime())) {
             return false;
         }
 

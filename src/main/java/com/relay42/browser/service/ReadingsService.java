@@ -49,18 +49,18 @@ public class ReadingsService {
             );
         }
 
+        if (outsideTemperatureModels.size() == 0) {
+            return createReadingResponce(readingRequest, -1);
+        }
+
         if (readingRequest.getType().equals(ReadingRequest.Type.AVERAGE)) {
             return createReadingResponce(readingRequest, outsideTemperatureModels.stream().mapToDouble(model -> model.getValue())
                     .average().getAsDouble());
         }
 
         if (readingRequest.getType().equals(ReadingRequest.Type.MAX)) {
-            double value = -1;
-            if (outsideTemperatureModels.size() > 0) {
-                value = outsideTemperatureModels.stream().mapToDouble(model -> model.getValue())
-                        .max().getAsDouble();
-            }
-            return createReadingResponce(readingRequest, value);
+            return createReadingResponce(readingRequest, outsideTemperatureModels.stream().mapToDouble(model -> model.getValue())
+                    .max().getAsDouble());
         }
 
         if (readingRequest.getType().equals(ReadingRequest.Type.MIN)) {
