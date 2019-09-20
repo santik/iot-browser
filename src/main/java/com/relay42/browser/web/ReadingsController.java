@@ -1,10 +1,14 @@
 package com.relay42.browser.web;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+import com.relay42.browser.service.ReadingRequestException;
 import com.relay42.browser.service.ReadingsService;
 import com.relay42.generated.ReadingRequest;
 import com.relay42.generated.ReadingResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,12 +32,13 @@ public class ReadingsController {
     }
 
     @PostMapping(path = "/", consumes = "application/json")
-    public ReadingResponse activity(@RequestBody @Valid ReadingRequest readingRequest) {
-        return readingsService.getReadings(readingRequest);
+    public ResponseEntity<ReadingResponse> activity(@RequestBody @Valid ReadingRequest readingRequest) throws ReadingRequestException {
+        return ResponseEntity.ok(readingsService.getReadings(readingRequest));
     }
 
-    @ExceptionHandler(Exception.class)
-    public void handleAllExceptions(Exception ex, WebRequest request) {
+    @ExceptionHandler({InvalidDefinitionException.class, ReadingRequestException.class})
+    public ResponseEntity handleAllExceptions(Exception ex, WebRequest request) {
         LOGGER.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
     }
 }
