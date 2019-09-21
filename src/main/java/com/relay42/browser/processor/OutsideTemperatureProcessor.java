@@ -1,6 +1,6 @@
 package com.relay42.browser.processor;
 
-import com.relay42.browser.database.model.OutsideTemperatureModel;
+import com.relay42.browser.database.model.IOTReadingsModel;
 import com.relay42.browser.database.repository.OutsideTemperatureRepository;
 import com.relay42.generated.OutsideTemperature;
 import org.slf4j.Logger;
@@ -21,6 +21,6 @@ public class OutsideTemperatureProcessor {
     @Retryable
     public void process(OutsideTemperature outsideTemperature) {
         LOGGER.info("Received {}", outsideTemperature);
-        outsideTemperatureRepository.save(OutsideTemperatureModel.createFromKafkaMessage(outsideTemperature));
+        outsideTemperatureRepository.save(IOTReadingsModel.createFromKafkaMessage(outsideTemperature));
     }
 }

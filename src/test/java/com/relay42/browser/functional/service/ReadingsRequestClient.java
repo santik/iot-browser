@@ -1,4 +1,4 @@
-package com.relay42.browser.functional;
+package com.relay42.browser.functional.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.relay42.generated.ReadingRequest;

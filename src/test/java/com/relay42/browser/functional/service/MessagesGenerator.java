@@ -1,4 +1,4 @@
-package com.relay42.browser.functional;
+package com.relay42.browser.functional.service;
 
 import com.relay42.generated.OutsideTemperature;
 

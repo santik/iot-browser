@@ -1,7 +1,6 @@
 package com.relay42.browser.functional;
 
-import com.relay42.browser.database.repository.OutsideTemperatureRepository;
-import com.relay42.browser.functional.stories.ListensToTopicsAndSavesDataFromMessages;
+import com.relay42.browser.functional.stories.SendsHttpRequestAndGetInformation;
 import net.serenitybdd.jbehave.SerenityStories;
 import org.jbehave.core.annotations.BeforeStories;
 import org.junit.runner.RunWith;
@@ -15,7 +14,7 @@ import javax.annotation.PostConstruct;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-        ListensToTopicsAndSavesDataFromMessages.class
+        SendsHttpRequestAndGetInformation.class
 })
 @SpringFunctionalTestEnvironment
 public class FunctionalTestSuite extends SerenityStories {
@@ -24,9 +23,6 @@ public class FunctionalTestSuite extends SerenityStories {
 
     @Autowired
     private ApplicationContext context;
-
-    @Autowired
-    private OutsideTemperatureRepository outsideTemperatureRepository;
 
     public ApplicationContext getContext() {
         return context;
@@ -46,9 +42,5 @@ public class FunctionalTestSuite extends SerenityStories {
         final String titleMargins = "\n=========================================================";
         final String title = "\n>>>>>>>>>>> STARTING THE FUNCTIONAL TEST SUITE";
         LOGGER.info("{}{}{}", titleMargins, title, titleMargins);
-    }
-
-    public OutsideTemperatureRepository getOutsideTemperatureRepository() {
-        return outsideTemperatureRepository;
     }
 }

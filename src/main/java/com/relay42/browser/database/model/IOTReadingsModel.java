@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class OutsideTemperatureModel implements Serializable {
+public class IOTReadingsModel implements Serializable {
 
     @Id @GeneratedValue(generator="system-uuid")
     @GenericGenerator(name="system-uuid", strategy = "uuid")
@@ -20,23 +20,26 @@ public class OutsideTemperatureModel implements Serializable {
     private String groupId;
     private Date created;
     private Double value;
+    private String type;
 
-    public OutsideTemperatureModel() {
+    public IOTReadingsModel() {
     }
 
-    private OutsideTemperatureModel(String deviceId, String groupId, Date created, Double value) {
+    private IOTReadingsModel(String deviceId, String groupId, Date created, Double value, String type) {
         this.deviceId = deviceId;
         this.groupId = groupId;
         this.created = created;
         this.value = value;
+        this.type = type;
     }
 
-    public static OutsideTemperatureModel createFromKafkaMessage(OutsideTemperature outsideTemperature) {
-        return new OutsideTemperatureModel(
+    public static IOTReadingsModel createFromKafkaMessage(OutsideTemperature outsideTemperature) {
+        return new IOTReadingsModel(
                 outsideTemperature.getDeviceId(),
                 outsideTemperature.getGroupId(),
                 outsideTemperature.getCreated(),
-                outsideTemperature.getValue()
+                outsideTemperature.getValue(),
+                OutsideTemperature.class.getSimpleName()
                 );
     }
 
@@ -58,12 +61,13 @@ public class OutsideTemperatureModel implements Serializable {
 
     @Override
     public String toString() {
-        return "OutsideTemperatureModel{" +
+        return "IOTReadingsModel{" +
                 "id='" + id + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", groupId='" + groupId + '\'' +
                 ", created=" + created +
                 ", value=" + value +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
