@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface OutsideTemperatureRepository extends JpaRepository<IOTReadingsModel, String> {
+public interface IoTReadingsRepository extends JpaRepository<IOTReadingsModel, String> {
     List<IOTReadingsModel> findByDeviceIdAndCreatedBetween(String deviceId, Date startDate, Date endDate);
 
     List<IOTReadingsModel> findByGroupIdAndCreatedBetween(String groupId, Date startDate, Date endDate);

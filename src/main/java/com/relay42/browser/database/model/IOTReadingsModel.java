@@ -1,6 +1,8 @@
 package com.relay42.browser.database.model;
 
+import com.relay42.generated.OutsideHumidity;
 import com.relay42.generated.OutsideTemperature;
+import com.relay42.generated.WindSpeed;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -12,8 +14,11 @@ import java.util.Date;
 @Entity
 public class IOTReadingsModel implements Serializable {
 
-    @Id @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    private static final String ID_GENERATOR = "system-uuid";
+
+    @Id
+    @GeneratedValue(generator = ID_GENERATOR)
+    @GenericGenerator(name = ID_GENERATOR, strategy = "uuid")
     private String id;
 
     private String deviceId;
@@ -41,6 +46,26 @@ public class IOTReadingsModel implements Serializable {
                 outsideTemperature.getValue(),
                 OutsideTemperature.class.getSimpleName()
                 );
+    }
+
+    public static IOTReadingsModel createFromKafkaMessage(OutsideHumidity outsideHumidity) {
+        return new IOTReadingsModel(
+                outsideHumidity.getDeviceId(),
+                outsideHumidity.getGroupId(),
+                outsideHumidity.getCreated(),
+                outsideHumidity.getValue(),
+                OutsideHumidity.class.getSimpleName()
+        );
+    }
+
+    public static IOTReadingsModel createFromKafkaMessage(WindSpeed windSpeed) {
+        return new IOTReadingsModel(
+                windSpeed.getDeviceId(),
+                windSpeed.getGroupId(),
+                windSpeed.getCreated(),
+                windSpeed.getValue(),
+                WindSpeed.class.getSimpleName()
+        );
     }
 
     public String getDeviceId() {

@@ -25,7 +25,6 @@ public class ReadingsService {
         Double value = iOTReadingsModelService.getValue(readingRequest);
 
         return createReadingResponse(readingRequest, value);
-
     }
 
     private ReadingResponse createReadingResponse(ReadingRequest readingRequest, Double value) {

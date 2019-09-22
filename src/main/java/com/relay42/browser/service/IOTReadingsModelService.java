@@ -1,7 +1,7 @@
 package com.relay42.browser.service;
 
 import com.relay42.browser.database.model.IOTReadingsModel;
-import com.relay42.browser.database.repository.OutsideTemperatureRepository;
+import com.relay42.browser.database.repository.IoTReadingsRepository;
 import com.relay42.generated.ReadingRequest;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +12,11 @@ import java.util.stream.DoubleStream;
 @Service
 public class IOTReadingsModelService {
 
-    private OutsideTemperatureRepository outsideTemperatureRepository;
+    private IoTReadingsRepository ioTReadingsRepository;
     private ReadingRequestUtils readingRequestUtils;
 
-    public IOTReadingsModelService(OutsideTemperatureRepository outsideTemperatureRepository, ReadingRequestUtils readingRequestUtils) {
-        this.outsideTemperatureRepository = outsideTemperatureRepository;
+    public IOTReadingsModelService(IoTReadingsRepository ioTReadingsRepository, ReadingRequestUtils readingRequestUtils) {
+        this.ioTReadingsRepository = ioTReadingsRepository;
         this.readingRequestUtils = readingRequestUtils;
     }
 
@@ -48,14 +48,14 @@ public class IOTReadingsModelService {
         List<IOTReadingsModel> outsideTemperatureModels = new ArrayList<>();
 
         if (readingRequestUtils.isRequestByDevice(readingRequest)) {
-            outsideTemperatureModels = outsideTemperatureRepository.findByDeviceIdAndCreatedBetween(
+            outsideTemperatureModels = ioTReadingsRepository.findByDeviceIdAndCreatedBetween(
                     readingRequest.getDeviceId(),
                     readingRequest.getStartDateTime(), readingRequest.getFinishDateTime()
             );
         }
 
         if (readingRequestUtils.isRequestByGroup(readingRequest)) {
-            outsideTemperatureModels = outsideTemperatureRepository.findByGroupIdAndCreatedBetween(
+            outsideTemperatureModels = ioTReadingsRepository.findByGroupIdAndCreatedBetween(
                     readingRequest.getGroupId(),
                     readingRequest.getStartDateTime(), readingRequest.getFinishDateTime()
             );

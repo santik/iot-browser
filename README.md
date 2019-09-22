@@ -1,26 +1,24 @@
 
 ## Simple application for saving IoT data from Kafka, saving data in database and querying data via API.
 
-Repository contains
-- [Challenge description]()
 - [Docker compose  file for running services locally]()
   
 ### Application
 
 Application listens to 3 Kafka topics: OutsideTemperature, OutsideHumidity, WindSpeed. 
-Contracts for topics can be found [here]()
+Contracts for topics can be found [here](https://github.com/santik/iot-browser/tree/master/src/main/resources/schema)
 
 Application saves data from topics to the database. In-memory H2 database was used. Data structure is flat and no relational so NoSQL database can be used in a real use case.
 
 Application exposes API endpoint is `/readings/`.   
 JSON must be sent as a body for the POST request.
-Contracts for request and response can be found [here]()  
-*[Postman collection for API calls]()*
+Contracts for request and response can be found [here](https://github.com/santik/iot-browser/tree/master/src/main/resources/schema)  
+*[Postman collection for API calls](https://github.com/santik/iot-browser/blob/master/relay42.postman_collection.json)*
   
 For publishing Kafka messages retry mechanism was set up. 
 
 ### Dependencies
-The full dependency list can be seen in [pom.xml]()
+The full dependency list can be seen in [pom.xml](https://github.com/santik/iot-browser/blob/master/pom.xml)
 Bellow listed the main set of dependencies
 
  - Java11
@@ -33,7 +31,7 @@ Bellow listed the main set of dependencies
  - Serenity
  - H2
  
- Kafka cluster for the local running of application created with [docker-compose]() 
+ Kafka cluster for the local running of application and functional testing created with [docker-compose](https://github.com/santik/iot-browser/blob/master/docker-compose.yml) 
 
 ### Running
 
@@ -44,7 +42,7 @@ Bellow listed the main set of dependencies
 The easiest way is to run it inside [IntelliJ IDEA](https://www.jetbrains.com/idea/). 
 Steps :
 
- 4. Run `src/main/java/com/relay42/IotBrowser.java`
+ 4. Run `src/main/java/com/relay42/browser/IotBrowser.java`
 
 If there is no IDEA. 
 
@@ -55,7 +53,7 @@ If there is no IDEA.
  Majority of classes are covered with unittests.
  
  Functional flows are covered with functional tests. Serenity BDD approach was used to have [tests as documentation](https://en.wikipedia.org/wiki/Specification_by_example). 
- Stories can be found [here]() 
+ Stories can be found [here](https://github.com/santik/iot-browser/tree/master/src/test/resources/com/relay42/functional/stories) 
  
  ### Known issues and possible improvements
   - Different types of devices can have the same id or can be members of the same group. There are multiple ways to solve this problem:
