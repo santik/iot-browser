@@ -9,7 +9,7 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class OutsideHumidityProcessor {
+public class OutsideHumidityProcessor implements KafkaMessageProcessor<OutsideHumidity> {
     private static final Logger LOGGER = LoggerFactory.getLogger(OutsideHumidityProcessor.class);
 
     private IoTReadingsRepository ioTReadingsRepository;
@@ -18,6 +18,7 @@ public class OutsideHumidityProcessor {
         this.ioTReadingsRepository = ioTReadingsRepository;
     }
 
+    @Override
     @Retryable
     public void process(OutsideHumidity outsideHumidity) {
         LOGGER.info("Received {}", outsideHumidity);
