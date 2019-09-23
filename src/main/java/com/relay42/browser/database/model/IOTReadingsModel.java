@@ -86,13 +86,13 @@ public class IOTReadingsModel implements Serializable {
 
     @Override
     public String toString() {
-        return "IOTReadingsModel{" +
-                "id='" + id + '\'' +
-                ", deviceId='" + deviceId + '\'' +
-                ", groupId='" + groupId + '\'' +
-                ", created=" + created +
-                ", value=" + value +
-                ", type='" + type + '\'' +
-                '}';
+        return "IOTReadingsModel{"
+                + "id='" + id + '\''
+                + ", deviceId='" + deviceId + '\''
+                + ", groupId='" + groupId + '\''
+                + ", created=" + created
+                + ", value=" + value
+                + ", type='" + type + '\''
+                + '}';
     }
 }

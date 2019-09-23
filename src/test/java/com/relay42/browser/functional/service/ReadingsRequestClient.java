@@ -73,6 +73,4 @@ public class ReadingsRequestClient {
         ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
         return readingResponse.getValue();
     }
-
-
 }

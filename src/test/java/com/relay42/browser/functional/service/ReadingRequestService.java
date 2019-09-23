@@ -7,6 +7,9 @@ import java.util.Date;
 
 public class ReadingRequestService {
 
+    private ReadingRequestService() {
+    }
+
     public static ReadingRequest getReadingRequestForDeviceId(String deviceId) {
         ReadingRequest readingsRequest = new ReadingRequest();
         readingsRequest.setDeviceId(deviceId);

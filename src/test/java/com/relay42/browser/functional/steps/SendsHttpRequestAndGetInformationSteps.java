@@ -41,7 +41,7 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
 
     @Then("request for reading from OutsideTemperature returns correct value")
     public void verifyReadingRequestForOutsideTemperatureSucceded() {
-        AsyncEventHelper.await(this::requestReturnCorrectOutsideTemperatureData, "Data saved");
+        AsyncEventHelper.await(this::requestReturnCorrectOutsideTemperatureData, "Data received");
     }
 
     private boolean requestReturnCorrectOutsideTemperatureData() throws IOException, InterruptedException {
@@ -63,7 +63,6 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
                 && minByGroupIdIsCorrect(groupId, expectedMinByGroupId);
     }
 
-
     @Given("multiple OutsideHumidity messages")
     public void generateOutsideHumidityMessages() {
         outsideHumidities = MessagesGenerator.generateOutsideHumidityList();
@@ -76,7 +75,7 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
 
     @Then("request for reading from OutsideHumidity returns correct value")
     public void verifyReadingRequestSucceded() {
-        AsyncEventHelper.await(this::requestReturnCorrectOutsideHumidityData, "Data saved");
+        AsyncEventHelper.await(this::requestReturnCorrectOutsideHumidityData, "Data received");
     }
 
     private boolean requestReturnCorrectOutsideHumidityData() throws IOException, InterruptedException {
@@ -110,7 +109,7 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
 
     @Then("request for reading from WindSpeed returns correct value")
     public void verifyReadingRequestSuccededForWindSpeed() {
-        AsyncEventHelper.await(this::requestReturnCorrectWindSpeedData, "Data saved");
+        AsyncEventHelper.await(this::requestReturnCorrectWindSpeedData, "Data received");
     }
 
     private boolean requestReturnCorrectWindSpeedData() throws IOException, InterruptedException {
@@ -132,7 +131,6 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
                 && minByGroupIdIsCorrect(groupId, expectedMinByGroupId);
     }
 
-
     private boolean averageByDeviceIdIsCorrect(String deviceId, double expectedAverage) throws IOException, InterruptedException {
         return expectedAverage == readingsRequestClient.getAverageByDeviceId(deviceId);
     }
@@ -145,7 +143,7 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
         return expectedMin == readingsRequestClient.getMinByDeviceId(deviceId);
     }
 
-    private boolean averageByGroupIdIsCorrect(String groupId, double expectedAverage ) throws IOException, InterruptedException {
+    private boolean averageByGroupIdIsCorrect(String groupId, double expectedAverage) throws IOException, InterruptedException {
         return expectedAverage == readingsRequestClient.getAverageByGroupId(groupId);
     }
 
@@ -162,7 +160,7 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
                 .filter(outsideTemperature -> outsideTemperature.getDeviceId().equals(deviceId))
                 .mapToDouble(model -> model.getValue());
     }
-    
+
     private DoubleStream getValuesFromOutsideTemperatureByGroupId(String groupId, List<OutsideTemperature> outsideTemperaturesMessages) {
         return outsideTemperaturesMessages.stream()
                 .filter(outsideTemperature -> outsideTemperature.getGroupId().equals(groupId))

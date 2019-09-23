@@ -19,7 +19,9 @@ public class KafkaMessagesTestPublisher {
     private final MessageChannel windSpeedOutputChannel;
 
     @Autowired
-    public KafkaMessagesTestPublisher(MessageChannel outsideTemperatureOutputChannel, MessageChannel outsideHumidityOutputChannel, MessageChannel windSpeedOutputChannel) {
+    public KafkaMessagesTestPublisher(MessageChannel outsideTemperatureOutputChannel,
+                                      MessageChannel outsideHumidityOutputChannel,
+                                      MessageChannel windSpeedOutputChannel) {
         this.outsideTemperatureOutputChannel = outsideTemperatureOutputChannel;
         this.outsideHumidityOutputChannel = outsideHumidityOutputChannel;
         this.windSpeedOutputChannel = windSpeedOutputChannel;
