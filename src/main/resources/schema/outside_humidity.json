@@ -10,6 +10,10 @@
     "value",
     "created"
   ],
+  "extends" : {
+    "type" : "object",
+    "javaType" : "com.relay42.generated.KafkaMessage"
+  },
   "properties": {
     "deviceId": {
       "$id": "#/properties/deviceId",

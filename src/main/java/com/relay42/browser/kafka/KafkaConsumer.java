@@ -1,8 +1,7 @@
 package com.relay42.browser.kafka;
 
-import com.relay42.browser.processor.OutsideHumidityProcessor;
-import com.relay42.browser.processor.OutsideTemperatureProcessor;
-import com.relay42.browser.processor.WindSpeedProcessor;
+import com.relay42.browser.processor.KafkaMessageProcessor;
+import com.relay42.generated.KafkaMessage;
 import com.relay42.generated.OutsideHumidity;
 import com.relay42.generated.OutsideTemperature;
 import com.relay42.generated.WindSpeed;
@@ -13,30 +12,24 @@ import org.springframework.messaging.Message;
 @EnableBinding(KafkaChannels.class)
 public class KafkaConsumer {
 
-    private OutsideTemperatureProcessor outsideTemperatureProcessor;
-    private OutsideHumidityProcessor outsideHumidityProcessor;
-    private WindSpeedProcessor windSpeedProcessor;
+    private KafkaMessageProcessor messageProcessor;
 
-    public KafkaConsumer(OutsideTemperatureProcessor outsideTemperatureProcessor,
-                         OutsideHumidityProcessor outsideHumidityProcessor,
-                         WindSpeedProcessor windSpeedProcessor) {
-        this.outsideTemperatureProcessor = outsideTemperatureProcessor;
-        this.outsideHumidityProcessor = outsideHumidityProcessor;
-        this.windSpeedProcessor = windSpeedProcessor;
+    public KafkaConsumer(KafkaMessageProcessor messageProcessor) {
+        this.messageProcessor = messageProcessor;
     }
 
     @StreamListener(KafkaChannels.OUTSIDE_TEMPERATURE_INPUT_CHANNEL)
     public void consumeOutsideTemperature(Message<OutsideTemperature> message) {
-        outsideTemperatureProcessor.process(message.getPayload());
+        messageProcessor.process(message.getPayload());
     }
 
     @StreamListener(KafkaChannels.OUTSIDE_HUMIDITY_INPUT_CHANNEL)
     public void consumeOutsideHumidity(Message<OutsideHumidity> message) {
-        outsideHumidityProcessor.process(message.getPayload());
+        messageProcessor.process(message.getPayload());
     }
 
     @StreamListener(KafkaChannels.WIND_SPEED_INPUT_CHANNEL)
     public void consumeWindSpeed(Message<WindSpeed> message) {
-        windSpeedProcessor.process(message.getPayload());
+        messageProcessor.process(message.getPayload());
     }
 }
