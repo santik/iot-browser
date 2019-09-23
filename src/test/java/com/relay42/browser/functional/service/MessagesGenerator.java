@@ -6,14 +6,18 @@ import com.relay42.generated.WindSpeed;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MessagesGenerator {
+
+    private static final int NUMBER_OF_MESSAGES = 100;
 
     private MessagesGenerator() {
     }
 
-    public static OutsideTemperature generateOutsideTemperatureMessage() {
+    private static OutsideTemperature generateOutsideTemperatureMessage() {
         OutsideTemperature outsideTemperature = new OutsideTemperature();
         outsideTemperature.setDeviceId("someDeviceId" + Math.random());
         outsideTemperature.setGroupId("someGroupId" + Math.random());
@@ -24,7 +28,7 @@ public class MessagesGenerator {
         return outsideTemperature;
     }
 
-    public static OutsideHumidity generateOutsideHumidityMessage() {
+    private static OutsideHumidity generateOutsideHumidityMessage() {
         OutsideHumidity outsideHumidity = new OutsideHumidity();
         outsideHumidity.setDeviceId("someDeviceId" + Math.random());
         outsideHumidity.setGroupId("someGroupId" + Math.random());
@@ -44,6 +48,60 @@ public class MessagesGenerator {
         windSpeed.setValue(temperature);
 
         return windSpeed;
+    }
+
+    public static List<OutsideTemperature> generateOutsideTemperatureList() {
+        List<OutsideTemperature> outsideTemperatures = new ArrayList<>();
+
+        for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
+            outsideTemperatures.add(MessagesGenerator.generateOutsideTemperatureMessage());
+        }
+
+        for (int i = 0; i < NUMBER_OF_MESSAGES/2; i++) {
+            outsideTemperatures.get(i).setDeviceId(outsideTemperatures.get(0).getDeviceId());
+        }
+
+        for (int i = NUMBER_OF_MESSAGES/2; i < NUMBER_OF_MESSAGES; i++) {
+            outsideTemperatures.get(i).setGroupId(outsideTemperatures.get(0).getGroupId());
+        }
+
+        return outsideTemperatures;
+    }
+
+    public static List<OutsideHumidity> generateOutsideHumidityList() {
+        List<OutsideHumidity> outsideHumidities = new ArrayList<>();
+
+        for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
+            outsideHumidities.add(MessagesGenerator.generateOutsideHumidityMessage());
+        }
+
+        for (int i = 0; i < NUMBER_OF_MESSAGES/2; i++) {
+            outsideHumidities.get(i).setDeviceId(outsideHumidities.get(0).getDeviceId());
+        }
+
+        for (int i = NUMBER_OF_MESSAGES/2; i < NUMBER_OF_MESSAGES; i++) {
+            outsideHumidities.get(i).setGroupId(outsideHumidities.get(0).getGroupId());
+        }
+
+        return outsideHumidities;
+    }
+
+    public static List<WindSpeed> generateWindSpeedList() {
+        List<WindSpeed> windSpeeds = new ArrayList<>();
+
+        for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
+            windSpeeds.add(MessagesGenerator.generateWindSpeedMessage());
+        }
+
+        for (int i = 0; i < NUMBER_OF_MESSAGES/2; i++) {
+            windSpeeds.get(i).setDeviceId(windSpeeds.get(0).getDeviceId());
+        }
+
+        for (int i = NUMBER_OF_MESSAGES/2; i < NUMBER_OF_MESSAGES; i++) {
+            windSpeeds.get(i).setGroupId(windSpeeds.get(0).getGroupId());
+        }
+
+        return windSpeeds;
     }
 
 }

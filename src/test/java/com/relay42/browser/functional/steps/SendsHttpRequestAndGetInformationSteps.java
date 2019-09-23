@@ -6,23 +6,18 @@ import com.relay42.browser.functional.service.ReadingsRequestClient;
 import com.relay42.browser.functional.kafka.KafkaMessagesTestPublisher;
 import com.relay42.generated.OutsideHumidity;
 import com.relay42.generated.OutsideTemperature;
-import com.relay42.generated.ReadingRequest;
-import com.relay42.generated.ReadingResponse;
+import com.relay42.generated.WindSpeed;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Then;
 import org.jbehave.core.annotations.When;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.DoubleStream;
 
 public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
-
-    private static final int NUMBER_OF_MESSAGES = 100;
 
     @Autowired
     private KafkaMessagesTestPublisher kafkaMessagesTestPublisher;
@@ -32,20 +27,11 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
 
     private List<OutsideTemperature> outsideTemperatures = new ArrayList<>();
     private List<OutsideHumidity> outsideHumidities = new ArrayList<>();
+    private List<WindSpeed> windSpeeds = new ArrayList<>();
 
     @Given("multiple OutsideTemperature messages")
     public void generateOutsideTemperatureMessages() {
-        for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
-            outsideTemperatures.add(MessagesGenerator.generateOutsideTemperatureMessage());
-        }
-
-        for (int i = 0; i < NUMBER_OF_MESSAGES/2; i++) {
-            outsideTemperatures.get(i).setDeviceId(outsideTemperatures.get(0).getDeviceId());
-        }
-
-        for (int i = NUMBER_OF_MESSAGES/2; i < NUMBER_OF_MESSAGES; i++) {
-            outsideTemperatures.get(i).setGroupId(outsideTemperatures.get(0).getGroupId());
-        }
+        outsideTemperatures = MessagesGenerator.generateOutsideTemperatureList();
     }
 
     @When("OutsideTemperature messages are published")
@@ -80,17 +66,7 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
 
     @Given("multiple OutsideHumidity messages")
     public void generateOutsideHumidityMessages() {
-        for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
-            outsideHumidities.add(MessagesGenerator.generateOutsideHumidityMessage());
-        }
-
-        for (int i = 0; i < NUMBER_OF_MESSAGES/2; i++) {
-            outsideHumidities.get(i).setDeviceId(outsideHumidities.get(0).getDeviceId());
-        }
-
-        for (int i = NUMBER_OF_MESSAGES/2; i < NUMBER_OF_MESSAGES; i++) {
-            outsideHumidities.get(i).setGroupId(outsideHumidities.get(0).getGroupId());
-        }
+        outsideHumidities = MessagesGenerator.generateOutsideHumidityList();
     }
 
     @When("OutsideHumidity messages are published")
@@ -121,88 +97,100 @@ public class SendsHttpRequestAndGetInformationSteps extends BaseSteps {
                 && maxByGroupIdIsCorrect(groupId, expectedMaxByGroupId)
                 && minByGroupIdIsCorrect(groupId, expectedMinByGroupId);
     }
-    
 
-    private boolean averageByDeviceIdIsCorrect(String deviceId, double expectedAverage) throws IOException, InterruptedException {
-        ReadingRequest readingsRequest = getReadingRequestForDeviceId(deviceId);
-        readingsRequest.setType(ReadingRequest.Type.AVERAGE);
-        ReadingResponse readingResponse = readingsRequestClient.sendReadingRequest(readingsRequest);
-        return expectedAverage == readingResponse.getValue();
+    @Given("multiple WindSpeed messages")
+    public void generateWindSpeedMessages() {
+        windSpeeds = MessagesGenerator.generateWindSpeedList();
+    }
+
+    @When("WindSpeed messages are published")
+    public void publishWindSpeedMessages() {
+        windSpeeds.forEach(windSpeed -> kafkaMessagesTestPublisher.publishWindSpeed(windSpeed));
+    }
+
+    @Then("request for reading from WindSpeed returns correct value")
+    public void verifyReadingRequestSuccededForWindSpeed() {
+        AsyncEventHelper.await(this::requestReturnCorrectWindSpeedData, "Data saved");
+    }
+
+    private boolean requestReturnCorrectWindSpeedData() throws IOException, InterruptedException {
+        String deviceId = windSpeeds.get(0).getDeviceId();
+        double expectedAverageByDeviceId = getValuesFromWindSpeedByDeviceId(deviceId, windSpeeds).average().getAsDouble();
+        double expectedMaxByDeviceId = getValuesFromWindSpeedByDeviceId(deviceId, windSpeeds).max().getAsDouble();
+        double expectedMinByDeviceId = getValuesFromWindSpeedByDeviceId(deviceId, windSpeeds).min().getAsDouble();
+
+        String groupId = windSpeeds.get(windSpeeds.size() - 1).getGroupId();
+        double expectedAverageByGroupId = getValuesFromWindSpeedByGroupId(groupId, windSpeeds).average().getAsDouble();
+        double expectedMaxByGroupId = getValuesFromWindSpeedByGroupId(groupId, windSpeeds).max().getAsDouble();
+        double expectedMinByGroupId = getValuesFromWindSpeedByGroupId(groupId, windSpeeds).min().getAsDouble();
+
+        return averageByDeviceIdIsCorrect(deviceId, expectedAverageByDeviceId)
+                && maxByDeviceIdIsCorrect(deviceId, expectedMaxByDeviceId)
+                && minByDeviceIdIsCorrect(deviceId, expectedMinByDeviceId)
+                && averageByGroupIdIsCorrect(groupId, expectedAverageByGroupId)
+                && maxByGroupIdIsCorrect(groupId, expectedMaxByGroupId)
+                && minByGroupIdIsCorrect(groupId, expectedMinByGroupId);
     }
 
 
+    private boolean averageByDeviceIdIsCorrect(String deviceId, double expectedAverage) throws IOException, InterruptedException {
+        return expectedAverage == readingsRequestClient.getAverageByDeviceId(deviceId);
+    }
+
     private boolean maxByDeviceIdIsCorrect(String deviceId, double expectedMax) throws IOException, InterruptedException {
-        ReadingRequest readingsRequest = getReadingRequestForDeviceId(deviceId);
-        readingsRequest.setType(ReadingRequest.Type.MAX);
-        ReadingResponse readingResponse = readingsRequestClient.sendReadingRequest(readingsRequest);
-        return expectedMax == readingResponse.getValue();
+        return expectedMax == readingsRequestClient.getMaxByDeviceId(deviceId);
     }
 
     private boolean minByDeviceIdIsCorrect(String deviceId, double expectedMin) throws IOException, InterruptedException {
-        ReadingRequest readingsRequest = getReadingRequestForDeviceId(deviceId);
-        readingsRequest.setType(ReadingRequest.Type.MIN);
-        ReadingResponse readingResponse = readingsRequestClient.sendReadingRequest(readingsRequest);
-        return expectedMin == readingResponse.getValue();
+        return expectedMin == readingsRequestClient.getMinByDeviceId(deviceId);
     }
 
     private boolean averageByGroupIdIsCorrect(String groupId, double expectedAverage ) throws IOException, InterruptedException {
-        ReadingRequest readingsRequest = getReadingRequestForGroupId(groupId);
-        readingsRequest.setType(ReadingRequest.Type.AVERAGE);
-        ReadingResponse readingResponse = readingsRequestClient.sendReadingRequest(readingsRequest);
-        return expectedAverage == readingResponse.getValue();
+        return expectedAverage == readingsRequestClient.getAverageByGroupId(groupId);
     }
 
     private boolean maxByGroupIdIsCorrect(String groupId, double expectedMax) throws IOException, InterruptedException {
-        ReadingRequest readingsRequest = getReadingRequestForGroupId(groupId);
-        readingsRequest.setType(ReadingRequest.Type.MAX);
-        ReadingResponse readingResponse = readingsRequestClient.sendReadingRequest(readingsRequest);
-        return expectedMax == readingResponse.getValue();
+        return expectedMax == readingsRequestClient.getMaxByGroupId(groupId);
     }
 
     private boolean minByGroupIdIsCorrect(String groupId, double expectedMin) throws IOException, InterruptedException {
-        ReadingRequest readingsRequest = getReadingRequestForGroupId(groupId);
-        readingsRequest.setType(ReadingRequest.Type.MIN);
-        ReadingResponse readingResponse = readingsRequestClient.sendReadingRequest(readingsRequest);
-        return expectedMin == readingResponse.getValue();
+        return expectedMin == readingsRequestClient.getMinByGroupId(groupId);
     }
 
-    private DoubleStream getValuesFromOutsideTemperatureByDeviceId(String deviceId, List<OutsideTemperature> outsideHumidityMessagess) {
-        return outsideHumidityMessagess.stream()
-                .filter(outsideHumidity -> outsideHumidity.getDeviceId().equals(deviceId))
+    private DoubleStream getValuesFromOutsideTemperatureByDeviceId(String deviceId, List<OutsideTemperature> outsideTemperatureMessages) {
+        return outsideTemperatureMessages.stream()
+                .filter(outsideTemperature -> outsideTemperature.getDeviceId().equals(deviceId))
                 .mapToDouble(model -> model.getValue());
     }
     
+    private DoubleStream getValuesFromOutsideTemperatureByGroupId(String groupId, List<OutsideTemperature> outsideTemperaturesMessages) {
+        return outsideTemperaturesMessages.stream()
+                .filter(outsideTemperature -> outsideTemperature.getGroupId().equals(groupId))
+                .mapToDouble(model -> model.getValue());
+    }
+
     private DoubleStream getValuesFromOutsideHumiditiesByGroupId(String groupId, List<OutsideHumidity> outsideHumidityMessages) {
         return outsideHumidityMessages.stream()
                 .filter(outsideHumidity -> outsideHumidity.getGroupId().equals(groupId))
                 .mapToDouble(model -> model.getValue());
     }
 
-    private DoubleStream getValuesFromOutsideHumiditiesByDeviceId(String deviceId, List<OutsideHumidity> outsideHumidityMessagess) {
-        return outsideHumidityMessagess.stream()
+    private DoubleStream getValuesFromOutsideHumiditiesByDeviceId(String deviceId, List<OutsideHumidity> outsideHumidityMessages) {
+        return outsideHumidityMessages.stream()
                 .filter(outsideHumidity -> outsideHumidity.getDeviceId().equals(deviceId))
                 .mapToDouble(model -> model.getValue());
     }
 
-    private DoubleStream getValuesFromOutsideTemperatureByGroupId(String groupId, List<OutsideTemperature> outsideHumidityMessages) {
-        return outsideHumidityMessages.stream()
-                .filter(outsideHumidity -> outsideHumidity.getGroupId().equals(groupId))
+    private DoubleStream getValuesFromWindSpeedByGroupId(String groupId, List<WindSpeed> windSpeedList) {
+        return windSpeedList.stream()
+                .filter(windSpeed -> windSpeed.getGroupId().equals(groupId))
                 .mapToDouble(model -> model.getValue());
     }
-    
-    private ReadingRequest getReadingRequestForDeviceId(String deviceId) {
-        ReadingRequest readingsRequest = new ReadingRequest();
-        readingsRequest.setDeviceId(deviceId);
-        readingsRequest.setStartDateTime(Date.from(ZonedDateTime.now().minusMinutes(10).toInstant()));
-        readingsRequest.setFinishDateTime(Date.from(ZonedDateTime.now().toInstant()));
-        return readingsRequest;
+
+    private DoubleStream getValuesFromWindSpeedByDeviceId(String deviceId, List<WindSpeed> windSpeedList) {
+        return windSpeedList.stream()
+                .filter(windSpeed -> windSpeed.getDeviceId().equals(deviceId))
+                .mapToDouble(model -> model.getValue());
     }
 
-    private ReadingRequest getReadingRequestForGroupId(String groupId) {
-        ReadingRequest readingsRequest = new ReadingRequest();
-        readingsRequest.setGroupId(groupId);
-        readingsRequest.setStartDateTime(Date.from(ZonedDateTime.now().minusMinutes(10).toInstant()));
-        readingsRequest.setFinishDateTime(Date.from(ZonedDateTime.now().toInstant()));
-        return readingsRequest;
-    }
 }

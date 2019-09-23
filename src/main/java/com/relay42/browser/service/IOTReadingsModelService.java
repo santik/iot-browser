@@ -21,7 +21,7 @@ public class IOTReadingsModelService {
     }
 
     public Double getValue(ReadingRequest readingRequest) {
-        List<IOTReadingsModel> outsideTemperatureModels = getOutsideTemperatureModels(readingRequest);
+        List<IOTReadingsModel> outsideTemperatureModels = getIoTReadingModels(readingRequest);
 
         if (outsideTemperatureModels.size() == 0) {
             return null;
@@ -44,7 +44,7 @@ public class IOTReadingsModelService {
         return value;
     }
 
-    private List<IOTReadingsModel> getOutsideTemperatureModels(ReadingRequest readingRequest) {
+    private List<IOTReadingsModel> getIoTReadingModels(ReadingRequest readingRequest) {
         List<IOTReadingsModel> outsideTemperatureModels = new ArrayList<>();
 
         if (readingRequestUtils.isRequestByDevice(readingRequest)) {

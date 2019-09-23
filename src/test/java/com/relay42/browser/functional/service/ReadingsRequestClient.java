@@ -31,4 +31,48 @@ public class ReadingsRequestClient {
 
         return mapper.readValue(response.body(), ReadingResponse.class);
     }
+
+    public double getAverageByDeviceId(String deviceId) throws IOException, InterruptedException {
+        ReadingRequest readingsRequest = ReadingRequestService.getReadingRequestForDeviceId(deviceId);
+        readingsRequest.setType(ReadingRequest.Type.AVERAGE);
+        ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
+        return readingResponse.getValue();
+    }
+
+    public double getMaxByDeviceId(String deviceId) throws IOException, InterruptedException {
+        ReadingRequest readingsRequest = ReadingRequestService.getReadingRequestForDeviceId(deviceId);
+        readingsRequest.setType(ReadingRequest.Type.MAX);
+        ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
+        return readingResponse.getValue();
+    }
+
+    public double getMinByDeviceId(String deviceId) throws IOException, InterruptedException {
+        ReadingRequest readingsRequest = ReadingRequestService.getReadingRequestForDeviceId(deviceId);
+        readingsRequest.setType(ReadingRequest.Type.MIN);
+        ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
+        return readingResponse.getValue();
+    }
+
+    public double getAverageByGroupId(String groupId) throws IOException, InterruptedException {
+        ReadingRequest readingsRequest = ReadingRequestService.getReadingRequestForGroupId(groupId);
+        readingsRequest.setType(ReadingRequest.Type.AVERAGE);
+        ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
+        return readingResponse.getValue();
+    }
+
+    public double getMaxByGroupId(String groupId) throws IOException, InterruptedException {
+        ReadingRequest readingsRequest = ReadingRequestService.getReadingRequestForGroupId(groupId);
+        readingsRequest.setType(ReadingRequest.Type.MAX);
+        ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
+        return readingResponse.getValue();
+    }
+
+    public double getMinByGroupId(String groupId) throws IOException, InterruptedException {
+        ReadingRequest readingsRequest = ReadingRequestService.getReadingRequestForGroupId(groupId);
+        readingsRequest.setType(ReadingRequest.Type.MIN);
+        ReadingResponse readingResponse = sendReadingRequest(readingsRequest);
+        return readingResponse.getValue();
+    }
+
+
 }

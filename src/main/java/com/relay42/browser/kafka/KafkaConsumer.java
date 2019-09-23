@@ -11,15 +11,15 @@ import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.Message;
 
 @EnableBinding(KafkaChannels.class)
-public class OutsideTemperatureConsumer {
+public class KafkaConsumer {
 
     private OutsideTemperatureProcessor outsideTemperatureProcessor;
     private OutsideHumidityProcessor outsideHumidityProcessor;
     private WindSpeedProcessor windSpeedProcessor;
 
-    public OutsideTemperatureConsumer(OutsideTemperatureProcessor outsideTemperatureProcessor,
-                                      OutsideHumidityProcessor outsideHumidityProcessor,
-                                      WindSpeedProcessor windSpeedProcessor) {
+    public KafkaConsumer(OutsideTemperatureProcessor outsideTemperatureProcessor,
+                         OutsideHumidityProcessor outsideHumidityProcessor,
+                         WindSpeedProcessor windSpeedProcessor) {
         this.outsideTemperatureProcessor = outsideTemperatureProcessor;
         this.outsideHumidityProcessor = outsideHumidityProcessor;
         this.windSpeedProcessor = windSpeedProcessor;

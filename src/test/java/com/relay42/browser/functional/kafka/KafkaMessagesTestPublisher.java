@@ -1,5 +1,8 @@
 package com.relay42.browser.functional.kafka;
 
+import com.relay42.generated.OutsideHumidity;
+import com.relay42.generated.OutsideTemperature;
+import com.relay42.generated.WindSpeed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +25,17 @@ public class KafkaMessagesTestPublisher {
         this.windSpeedOutputChannel = windSpeedOutputChannel;
     }
 
-    public void publishOutsideTemperature(Object message) {
+    public void publishOutsideTemperature(OutsideTemperature message) {
         LOGGER.info("Publishing to outsideTemperatureOutputChannel channel. Message: {}", message.toString());
         outsideTemperatureOutputChannel.send(MessageBuilder.withPayload(message).build());
     }
 
-    public void publishOutsideHumidity(Object message) {
+    public void publishOutsideHumidity(OutsideHumidity message) {
         LOGGER.info("Publishing to outsideHumidityOutputChannel channel. Message: {}", message.toString());
         outsideHumidityOutputChannel.send(MessageBuilder.withPayload(message).build());
     }
 
-    public void publishWindSpeed(Object message) {
+    public void publishWindSpeed(WindSpeed message) {
         LOGGER.info("Publishing to windSpeedOutputChannel channel. Message: {}", message.toString());
         windSpeedOutputChannel.send(MessageBuilder.withPayload(message).build());
     }
