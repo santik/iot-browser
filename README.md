@@ -4,15 +4,13 @@
 Application listens to 3 Kafka topics: OutsideTemperature, OutsideHumidity, WindSpeed. 
 Contracts for topics can be found [here](https://github.com/santik/iot-browser/tree/master/src/main/resources/schema)
 
-Application saves data from topics to the database. In-memory H2 database was used. Data structure is flat and no relational so NoSQL database can be used in a real use case.
+Application saves data from topics to the database. In-memory H2 database was used. Data structure is flat and no-relational, so NoSQL database can be used in a real use case.
 
-Application exposes API endpoint is `/readings/`.   
+Application exposed API endpoint is `/readings/`.   
 JSON must be sent as a body for the POST request.
 Contracts for request and response can be found [here](https://github.com/santik/iot-browser/tree/master/src/main/resources/schema)  
 *[Postman collection for API calls](https://github.com/santik/iot-browser/blob/master/relay42.postman_collection.json)*
   
-For publishing Kafka messages retry mechanism was set up. 
-
 ### Dependencies
 The full dependency list can be seen in [pom.xml](https://github.com/santik/iot-browser/blob/master/pom.xml)
 Bellow listed the main set of dependencies
@@ -33,7 +31,7 @@ Bellow listed the main set of dependencies
 
  1. Checkout repository
  2. Run `docker-compose up -d` to create Kafka and Redis containers
- 3. Run `mvn clean install package`
+ 3. Run `mvn clean package`
 
 The easiest way is to run it inside [IntelliJ IDEA](https://www.jetbrains.com/idea/). 
 Steps :
@@ -42,7 +40,7 @@ Steps :
 
 If there is no IDEA. 
 
- 4. Run `java -jar target/iot-browser-DEVELOP-SNAPSHOT.jar` 
+ 4. Run `java -jar target/iotbrowser-DEVELOP-SNAPSHOT.jar` 
  
  ### Testing
  
