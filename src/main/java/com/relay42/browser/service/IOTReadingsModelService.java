@@ -13,11 +13,9 @@ import java.util.stream.DoubleStream;
 public class IOTReadingsModelService {
 
     private IoTReadingsRepository ioTReadingsRepository;
-    private ReadingRequestUtils readingRequestUtils;
 
-    public IOTReadingsModelService(IoTReadingsRepository ioTReadingsRepository, ReadingRequestUtils readingRequestUtils) {
+    public IOTReadingsModelService(IoTReadingsRepository ioTReadingsRepository) {
         this.ioTReadingsRepository = ioTReadingsRepository;
-        this.readingRequestUtils = readingRequestUtils;
     }
 
     public Double getValue(ReadingRequest readingRequest) {
@@ -29,15 +27,15 @@ public class IOTReadingsModelService {
 
         Double value = null;
 
-        if (readingRequestUtils.isAverageRequest(readingRequest)) {
+        if (ReadingRequestUtils.isAverageRequest(readingRequest)) {
             value = getAverageValue(outsideTemperatureModels);
         }
 
-        if (readingRequestUtils.isMaxRequest(readingRequest)) {
+        if (ReadingRequestUtils.isMaxRequest(readingRequest)) {
             value = getMaxValue(outsideTemperatureModels);
         }
 
-        if (readingRequestUtils.isMinRequest(readingRequest)) {
+        if (ReadingRequestUtils.isMinRequest(readingRequest)) {
             value = getMinValue(outsideTemperatureModels);
         }
 
@@ -47,14 +45,14 @@ public class IOTReadingsModelService {
     private List<IOTReadingsModel> getIoTReadingModels(ReadingRequest readingRequest) {
         List<IOTReadingsModel> outsideTemperatureModels = new ArrayList<>();
 
-        if (readingRequestUtils.isRequestByDevice(readingRequest)) {
+        if (ReadingRequestUtils.isRequestByDevice(readingRequest)) {
             outsideTemperatureModels = ioTReadingsRepository.findByDeviceIdAndCreatedBetween(
                     readingRequest.getDeviceId(),
                     readingRequest.getStartDateTime(), readingRequest.getFinishDateTime()
             );
         }
 
-        if (readingRequestUtils.isRequestByGroup(readingRequest)) {
+        if (ReadingRequestUtils.isRequestByGroup(readingRequest)) {
             outsideTemperatureModels = ioTReadingsRepository.findByGroupIdAndCreatedBetween(
                     readingRequest.getGroupId(),
                     readingRequest.getStartDateTime(), readingRequest.getFinishDateTime()
