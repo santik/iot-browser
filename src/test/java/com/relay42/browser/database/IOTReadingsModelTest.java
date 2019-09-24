@@ -1,5 +1,6 @@
-package com.relay42.browser.database.model;
+package com.relay42.browser.database;
 
+import com.relay42.browser.database.IOTReadingsModel;
 import com.relay42.generated.OutsideHumidity;
 import com.relay42.generated.OutsideTemperature;
 import com.relay42.generated.WindSpeed;

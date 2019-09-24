@@ -1,6 +1,5 @@
 package com.relay42.browser.kafka;
 
-import com.relay42.browser.processor.KafkaMessageProcessor;
 import com.relay42.generated.OutsideHumidity;
 import com.relay42.generated.OutsideTemperature;
 import com.relay42.generated.WindSpeed;

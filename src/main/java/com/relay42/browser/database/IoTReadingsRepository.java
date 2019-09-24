@@ -1,6 +1,6 @@
-package com.relay42.browser.database.repository;
+package com.relay42.browser.database;
 
-import com.relay42.browser.database.model.IOTReadingsModel;
+import com.relay42.browser.database.IOTReadingsModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

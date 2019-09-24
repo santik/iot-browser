@@ -1,7 +1,7 @@
 package com.relay42.browser.service;
 
-import com.relay42.browser.database.model.IOTReadingsModel;
-import com.relay42.browser.database.repository.IoTReadingsRepository;
+import com.relay42.browser.database.IOTReadingsModel;
+import com.relay42.browser.database.IoTReadingsRepository;
 import com.relay42.generated.ReadingRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
