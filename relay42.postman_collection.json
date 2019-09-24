@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "getMax",
+			"name": "getMaxForDevice",
 			"request": {
 				"url": "http://localhost:8080/readings/",
 				"method": "POST",
@@ -21,7 +21,107 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"deviceId\": \"deviceId\",\n  \"groupId\": \"groupId\",\n  \"type\": \"max\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2018-09-16T08:00:00+00:00\"\n}"
+					"raw": "{\n  \"deviceId\": \"deviceId\",\n  \"groupId\": null,\n  \"type\": \"max\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2020-09-16T08:00:00+00:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getMaxForGroup",
+			"request": {
+				"url": "http://localhost:8080/readings/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"deviceId\": null,\n  \"groupId\": \"groupId\",\n  \"type\": \"max\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2020-09-16T08:00:00+00:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getMinForDevice",
+			"request": {
+				"url": "http://localhost:8080/readings/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"deviceId\": \"deviceId\",\n  \"groupId\": null,\n  \"type\": \"min\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2020-09-16T08:00:00+00:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getMinForGroup",
+			"request": {
+				"url": "http://localhost:8080/readings/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"deviceId\": null,\n  \"groupId\": \"groupId\",\n  \"type\": \"min\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2020-09-16T08:00:00+00:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getAverageForDevice",
+			"request": {
+				"url": "http://localhost:8080/readings/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"deviceId\": \"deviceId\",\n  \"groupId\": null,\n  \"type\": \"average\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2020-09-16T08:00:00+00:00\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getAverageForGroup",
+			"request": {
+				"url": "http://localhost:8080/readings/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"deviceId\": null,\n  \"groupId\": \"groupId\",\n  \"type\": \"average\",\n  \"startDateTime\": \"2018-09-15T08:00:00+00:00\",\n  \"finishDateTime\": \"2020-09-16T08:00:00+00:00\"\n}"
 				},
 				"description": ""
 			},

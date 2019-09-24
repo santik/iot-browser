@@ -1,10 +1,6 @@
 
 ## Simple application for saving IoT data from Kafka, saving data in database and querying data via API.
 
-- [Docker compose  file for running services locally]()
-  
-### Application
-
 Application listens to 3 Kafka topics: OutsideTemperature, OutsideHumidity, WindSpeed. 
 Contracts for topics can be found [here](https://github.com/santik/iot-browser/tree/master/src/main/resources/schema)
 
@@ -55,7 +51,9 @@ If there is no IDEA.
  Functional flows are covered with functional tests. Serenity BDD approach was used to have [tests as documentation](https://en.wikipedia.org/wiki/Specification_by_example). 
  Stories can be found [here](https://github.com/santik/iot-browser/tree/master/src/test/resources/com/relay42/functional/stories) 
  
+ For _almost_ real testing `sends_random_kafka_messages.story` was created. It sends 3 different messages every second in infinite loop. It is possible to run this story and make calls to application via Postman. 
  ### Known issues and possible improvements
-  - Different types of devices can have the same id or can be members of the same group. There are multiple ways to solve this problem:
+  - Different types of devices can have the same id or can be members of the same group. There are 2 major ways to solve this problem:
     - send type of device in the request. So only reading from devices with particular type will be fetched.
-    - put responsibility of providing unique ids and valid group ids to kafka messages producer
+    - put responsibility of providing unique ids and valid group ids to kafka messages producer (chosen)
+  - Max, min, average, etc. can be done via database function(if engine supports of course). But I see it as coupling to DB engine. That's why I decided to calculate values in app from the list of models.

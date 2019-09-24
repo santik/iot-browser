@@ -71,7 +71,7 @@ public final class MessagesGenerator {
         return windSpeeds;
     }
 
-    private static WindSpeed generateWindSpeedMessage() {
+    public static WindSpeed generateWindSpeedMessage() {
         WindSpeed windSpeed = new WindSpeed();
         windSpeed.setDeviceId("someDeviceId" + Math.random());
         windSpeed.setGroupId("someGroupId" + Math.random());
@@ -82,7 +82,7 @@ public final class MessagesGenerator {
         return windSpeed;
     }
 
-    private static OutsideTemperature generateOutsideTemperatureMessage() {
+    public static OutsideTemperature generateOutsideTemperatureMessage() {
         OutsideTemperature outsideTemperature = new OutsideTemperature();
         outsideTemperature.setDeviceId("someDeviceId" + Math.random());
         outsideTemperature.setGroupId("someGroupId" + Math.random());
@@ -93,7 +93,7 @@ public final class MessagesGenerator {
         return outsideTemperature;
     }
 
-    private static OutsideHumidity generateOutsideHumidityMessage() {
+    public static OutsideHumidity generateOutsideHumidityMessage() {
         OutsideHumidity outsideHumidity = new OutsideHumidity();
         outsideHumidity.setDeviceId("someDeviceId" + Math.random());
         outsideHumidity.setGroupId("someGroupId" + Math.random());
